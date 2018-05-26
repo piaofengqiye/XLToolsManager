@@ -18,6 +18,10 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     self.view.backgroundColor = XLTools.xl_random;
+    NSString *tempNum = [XLTools getCacheSizeWithFilePath:XLTools.xl_tempPath];
+    NSString *docuNum = [XLTools getCacheSizeWithFilePath:XLTools.xl_documentPath];
+    NSString *cacheNum = [XLTools getCacheSizeWithFilePath:XLTools.xl_cachePath];
+    NSLog(@"%@, %@, %@", tempNum, docuNum, cacheNum);
 }
 
 

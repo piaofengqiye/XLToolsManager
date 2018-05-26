@@ -421,10 +421,10 @@ void ProviderReleaseData (void *info, const void *data, size_t size){
         [exception raise];
         
     }
-    NSLog(@"debug");
+//    NSLog(@"debug");
     //发布
 #else
-    NSLog(@"post");
+//    NSLog(@"post");
 #endif
     
     //获取“path”文件夹下面的所有文件
