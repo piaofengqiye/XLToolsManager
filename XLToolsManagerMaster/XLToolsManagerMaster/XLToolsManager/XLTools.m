@@ -7,7 +7,7 @@
 //
 
 #import "XLTools.h"
-
+#import <CommonCrypto/CommonDigest.h>
 @implementation XLTools
 
 /**
@@ -207,6 +207,17 @@
     NSPredicate *passWordPredicate = [NSPredicate predicateWithFormat:@"SELF MATCHES %@",passWordRegex];
     return [passWordPredicate evaluateWithObject:password];
 }
+/**
+ 正则判断密码格式, 默认(6-12位中,英文,数字)
+ */
++ (BOOL)isPassword:(NSString *)password format:(NSString*)format {
+    NSString *passWordRegex = @"^[a-zA-Z0-9]{6,12}+$";
+    if (![self isEmptyString:format]) {
+        passWordRegex = format;
+    }
+    NSPredicate *passWordPredicate = [NSPredicate predicateWithFormat:@"SELF MATCHES %@",passWordRegex];
+    return [passWordPredicate evaluateWithObject:password];
+}
 
 /**
  时间戳转换时间
@@ -252,6 +263,18 @@
     NSError *parseError = nil;
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:objc options:nil error:&parseError];
     return [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+}
+
+/**
+ 读取本地JSON文件
+ */
++ (NSDictionary *)readLocalJSONFileWithName:(NSString *)name {
+    // 获取文件路径
+    NSString *path = [[NSBundle mainBundle] pathForResource:name ofType:@"json"];
+    // 将文件数据化
+    NSData *data = [[NSData alloc] initWithContentsOfFile:path];
+    // 对数据进行JSON格式化并返回字典形式
+    return [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
 }
 
 #pragma mark --- UIImage
@@ -515,4 +538,76 @@ void ProviderReleaseData (void *info, const void *data, size_t size){
     
     return YES;
 }
+#pragma mark --- MD5加密
+/*
+ *由于MD5加密是不可逆的,多用来进行验证
+ */
+// MD5加密,32位小写
++(NSString *)MD5ForLower32Bate:(NSString *)str {
+    //要进行UTF8的转码
+    const char* input = [str UTF8String];
+    unsigned char result[CC_MD5_DIGEST_LENGTH];
+    CC_MD5(input, (CC_LONG)strlen(input), result);
+    
+    NSMutableString *digest = [NSMutableString stringWithCapacity:CC_MD5_DIGEST_LENGTH * 2];
+    for (NSInteger i = 0; i < CC_MD5_DIGEST_LENGTH; i++) {
+        [digest appendFormat:@"%02x", result[i]];
+    }
+    
+    return digest;
+}
+// MD5加密,32位大写
++(NSString *)MD5ForUpper32Bate:(NSString *)str {
+    //要进行UTF8的转码
+    const char* input = [str UTF8String];
+    unsigned char result[CC_MD5_DIGEST_LENGTH];
+    CC_MD5(input, (CC_LONG)strlen(input), result);
+    
+    NSMutableString *digest = [NSMutableString stringWithCapacity:CC_MD5_DIGEST_LENGTH * 2];
+    for (NSInteger i = 0; i < CC_MD5_DIGEST_LENGTH; i++) {
+        [digest appendFormat:@"%02X", result[i]];
+    }
+    
+    return digest;
+}
+// MD5加密,16为大写
++(NSString *)MD5ForUpper16Bate:(NSString *)str {
+    NSString *md5Str = [self MD5ForUpper32Bate:str];
+    
+    NSString  *string;
+    for (int i=0; i<24; i++) {
+        string=[md5Str substringWithRange:NSMakeRange(8, 16)];
+    }
+    return string;
+}
+// MD5加密,16位小写
++(NSString *)MD5ForLower16Bate:(NSString *)str {
+    NSString *md5Str = [self MD5ForLower32Bate:str];
+    
+    NSString  *string;
+    for (int i=0; i<24; i++) {
+        string=[md5Str substringWithRange:NSMakeRange(8, 16)];
+    }
+    return string;
+}
+
+#pragma mark --- base64加密,解密
+
+/**
+ 对一个字符串进行base64编码
+ */
++(NSString *)base64EncodeString:(NSString *)string
+{
+    NSData *data = [string dataUsingEncoding:NSUTF8StringEncoding];
+    return [data base64EncodedStringWithOptions:0];
+}
+/**
+ 对一个字符串进行base解码
+ */
++(NSString *)base64decodeString:(NSString *)string
+{
+    NSData *data = [[NSData alloc]initWithBase64EncodedString:string options:0];
+    return [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
+}
+
 @end

@@ -111,6 +111,14 @@
  正则判断密码格式
  */
 + (BOOL)isPassword:(NSString *)password;
+/**
+ 正则判断密码格式, 默认(6-12位中,英文,数字;format:可nil)
+ */
++ (BOOL)isPassword:(NSString *)password format:(NSString*)format;
+/**
+ 读取本地JSON文件
+ */
++ (NSDictionary *)readLocalJSONFileWithName:(NSString *)name;
 
 #pragma mark ------ 时间戳转换
 /**
@@ -178,4 +186,27 @@
  *  @return 是否清除成功
  */
 + (BOOL)clearCacheWithFilePath:(NSString *)path;
+
+#pragma mark --- MD5加密
+/*
+ *由于MD5加密是不可逆的,多用来进行验证
+ */
+// MD5加密,32位小写
++(NSString *)MD5ForLower32Bate:(NSString *)str;
+// MD5加密,32位大写
++(NSString *)MD5ForUpper32Bate:(NSString *)str;
+// MD5加密,16为大写
++(NSString *)MD5ForUpper16Bate:(NSString *)str;
+// MD5加密,16位小写
++(NSString *)MD5ForLower16Bate:(NSString *)str;
+#pragma mark --- base64加密,解密
+/**
+ 对一个字符串进行base64编码
+ */
++ (NSString *)base64EncodeString:(NSString *)string;
+/**
+ 对一个字符串进行base解码
+ */
++ (NSString *)base64decodeString:(NSString *)string;
+
 @end
