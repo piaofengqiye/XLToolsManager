@@ -14,6 +14,8 @@
 		7657EE3020B95C610062B3F2 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7657EE2E20B95C610062B3F2 /* LaunchScreen.storyboard */; };
 		7657EE3320B95C610062B3F2 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 7657EE3220B95C610062B3F2 /* main.m */; };
 		7657EE3C20B95C8F0062B3F2 /* XLTools.m in Sources */ = {isa = PBXBuildFile; fileRef = 7657EE3B20B95C8F0062B3F2 /* XLTools.m */; };
+		76D633FC20BCDB4D0082B054 /* XLUIWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 76D633FB20BCDB4D0082B054 /* XLUIWebViewController.m */; };
+		76D633FE20BCDE3A0082B054 /* index.html in Resources */ = {isa = PBXBuildFile; fileRef = 76D633FD20BCDE3A0082B054 /* index.html */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -29,6 +31,9 @@
 		7657EE3220B95C610062B3F2 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		7657EE3A20B95C8F0062B3F2 /* XLTools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XLTools.h; sourceTree = "<group>"; };
 		7657EE3B20B95C8F0062B3F2 /* XLTools.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XLTools.m; sourceTree = "<group>"; };
+		76D633FA20BCDB4D0082B054 /* XLUIWebViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XLUIWebViewController.h; sourceTree = "<group>"; };
+		76D633FB20BCDB4D0082B054 /* XLUIWebViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = XLUIWebViewController.m; sourceTree = "<group>"; };
+		76D633FD20BCDE3A0082B054 /* index.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = index.html; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -66,6 +71,9 @@
 				7657EE2420B95C5C0062B3F2 /* AppDelegate.m */,
 				7657EE2620B95C5C0062B3F2 /* ViewController.h */,
 				7657EE2720B95C5C0062B3F2 /* ViewController.m */,
+				76D633FD20BCDE3A0082B054 /* index.html */,
+				76D633FA20BCDB4D0082B054 /* XLUIWebViewController.h */,
+				76D633FB20BCDB4D0082B054 /* XLUIWebViewController.m */,
 				7657EE2920B95C5C0062B3F2 /* Main.storyboard */,
 				7657EE2C20B95C610062B3F2 /* Assets.xcassets */,
 				7657EE2E20B95C610062B3F2 /* LaunchScreen.storyboard */,
@@ -142,6 +150,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7657EE3020B95C610062B3F2 /* LaunchScreen.storyboard in Resources */,
+				76D633FE20BCDE3A0082B054 /* index.html in Resources */,
 				7657EE2D20B95C610062B3F2 /* Assets.xcassets in Resources */,
 				7657EE2B20B95C5C0062B3F2 /* Main.storyboard in Resources */,
 			);
@@ -156,6 +165,7 @@
 			files = (
 				7657EE2820B95C5C0062B3F2 /* ViewController.m in Sources */,
 				7657EE3C20B95C8F0062B3F2 /* XLTools.m in Sources */,
+				76D633FC20BCDB4D0082B054 /* XLUIWebViewController.m in Sources */,
 				7657EE3320B95C610062B3F2 /* main.m in Sources */,
 				7657EE2520B95C5C0062B3F2 /* AppDelegate.m in Sources */,
 			);

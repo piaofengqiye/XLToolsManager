@@ -22,10 +22,9 @@
     NSString *docuNum = [XLTools getCacheSizeWithFilePath:XLTools.xl_documentPath];
     NSString *cacheNum = [XLTools getCacheSizeWithFilePath:XLTools.xl_cachePath];
     NSLog(@"%@, %@, %@", tempNum, docuNum, cacheNum);
-    NSString *day = [XLTools timeTransFromTimestamp:XLTools.xl_currentTimeZone format:@"yyyy-MM-dd HH:mm:ss"];
+    NSString *day = [XLTools timeTransFromTimestamp:XLTools.xl_currentTimeZone format:@"yyyy-MM-dd HH:mm:ss EEEE"];
     NSLog(@"%@", day);
     [day capitalizedString];
-    
     
 }
 
