@@ -7,6 +7,10 @@
 //
 
 #import "XLTools.h"
+#import <Photos/PHPhotoLibrary.h>
+#import <AVFoundation/AVCaptureDevice.h>
+#import <AVFoundation/AVMediaFormat.h>
+
 #import <CommonCrypto/CommonDigest.h>
 @implementation XLTools
 
@@ -58,12 +62,15 @@
 + (UIColor *)xl_clear {
     return [UIColor clearColor];
 }
++ (UIColor *)xl_groupTableViewBackground {
+    return [UIColor groupTableViewBackgroundColor];
+}
 
 /**
  随机色
  */
 + (UIColor *)xl_random {
-    return [UIColor colorWithRed:arc4random_uniform(255)/255.0 green:arc4random_uniform(255)/255.0 blue:arc4random_uniform(255)/255.0 alpha:1];
+    return [UIColor colorWithRed:arc4random_uniform(256)/255.0 green:arc4random_uniform(256)/255.0 blue:arc4random_uniform(256)/255.0 alpha:1];
 }
 /**
  设置16进制颜色
@@ -127,6 +134,34 @@
     NSDate *date = [NSDate date]; // 获得时间对象
     NSDateFormatter *forMatter = [[NSDateFormatter alloc] init];
     [forMatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+    NSString *dateStr = [forMatter stringFromDate:date];
+    return dateStr  ;
+}
++ (NSString *)xl_currentYMD {
+    NSDate *date = [NSDate date]; // 获得时间对象
+    NSDateFormatter *forMatter = [[NSDateFormatter alloc] init];
+    [forMatter setDateFormat:@"yyyy-MM-dd"];
+    NSString *dateStr = [forMatter stringFromDate:date];
+    return dateStr  ;
+}
++ (NSString *)xl_currentYear {
+    NSDate *date = [NSDate date]; // 获得时间对象
+    NSDateFormatter *forMatter = [[NSDateFormatter alloc] init];
+    [forMatter setDateFormat:@"yyyy"];
+    NSString *dateStr = [forMatter stringFromDate:date];
+    return dateStr  ;
+}
++ (NSString *)xl_currentMonth {
+    NSDate *date = [NSDate date]; // 获得时间对象
+    NSDateFormatter *forMatter = [[NSDateFormatter alloc] init];
+    [forMatter setDateFormat:@"MM"];
+    NSString *dateStr = [forMatter stringFromDate:date];
+    return dateStr  ;
+}
++ (NSString *)xl_currentDay {
+    NSDate *date = [NSDate date]; // 获得时间对象
+    NSDateFormatter *forMatter = [[NSDateFormatter alloc] init];
+    [forMatter setDateFormat:@"dd"];
     NSString *dateStr = [forMatter stringFromDate:date];
     return dateStr  ;
 }
@@ -220,6 +255,15 @@
 }
 
 /**
+ 验证邮箱格式
+ */
++ (BOOL)isEMail:(NSString *)email {
+    NSString *regex = @"^[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}$";
+    NSPredicate *redicate = [NSPredicate predicateWithFormat:@"SELF MATCHES %@",regex];
+    return [redicate evaluateWithObject:email];
+}
+
+/**
  时间戳转换时间
  */
 + (NSString *)timeTransFromTimestamp:(NSString *)stamp {
@@ -265,6 +309,27 @@
     return [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
 }
 
+//
+/**
+  将JSON串转化为字典或者数组
+ */
++ (id)jsonToArrayOrNSDictionary:(NSString *)json{
+    
+    NSData *data = [NSJSONSerialization dataWithJSONObject:json options:nil error:nil];
+    NSError *error = nil;
+    id jsonObject = [NSJSONSerialization JSONObjectWithData:data
+                                                    options:NSJSONReadingAllowFragments
+                                                      error:nil];
+    
+    if (jsonObject != nil && error == nil){
+        return jsonObject;
+    }else{
+        // 解析错误
+        return nil;
+    }
+    
+}
+
 /**
  读取本地JSON文件
  */
@@ -276,6 +341,68 @@
     // 对数据进行JSON格式化并返回字典形式
     return [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
 }
+
+/**
+ 得到一个16位随机数
+ 
+ @return return value description
+ */
++ (NSString *)getRandomNum {
+    NSString *num = @"";
+    for (int i = 0; i < 16; i++) {
+        int x = arc4random() % 10;
+        num = [NSString stringWithFormat:@"%@%d",num, x];
+    }
+    return num;
+}
+
+/**
+ 遍历一个字典, 将key格式化输出 为OC 属性列表
+ */
++ (NSString *)xl_printStringForOCWithData:(NSDictionary *)data  {
+    NSMutableArray *muStr = [NSMutableArray arrayWithCapacity:1];
+    NSArray *keysArr = data.allKeys;
+    for (int i = 0; i < keysArr.count; i++) {
+        //获取value类型
+        NSString *key = [keysArr objectAtIndex:i];
+        id value = [data objectForKey:key];
+        if ([self isEmptyClass:value] || [value isKindOfClass:[NSNumber class]] || [value isKindOfClass:[NSString class]]) {
+            NSString *str = [NSString stringWithFormat:@"@property(nonatomic, copy) NSString *%@;", key];
+            [muStr addObject:str];
+            continue;
+        }
+        NSString *str = [NSString stringWithFormat:@"@property(nonatomic, strong) %@ *%@;", NSStringFromClass([value class]), key];
+        [muStr addObject:str];
+        
+    }
+    NSString *string = [muStr componentsJoinedByString:@"\n"];
+    return string;
+}
+
+/**
+ 遍历一个字典, 将key格式化输出 为swift 属性列表
+ 
+ 
+ */
++ (NSString *)xl_printStringForSwiftWithData:(NSDictionary *)data  {
+    NSMutableArray *muStr = [NSMutableArray arrayWithCapacity:1];
+    NSArray *keysArr = data.allKeys;
+    for (int i = 0; i < keysArr.count; i++) {
+        //获取value类型
+        NSString *key = [keysArr objectAtIndex:i];
+        id value = [data objectForKey:key];
+        if ([self isEmptyClass:value] || [value isKindOfClass:[NSNumber class]] || [value isKindOfClass:[NSString class]]) {
+            NSString *str = [NSString stringWithFormat:@"var %@:String;", key];
+            [muStr addObject:str];
+            break;
+        }
+        NSString *str = [NSString stringWithFormat:@"var %@:%@;",  key, [data[key] class]];
+        [muStr addObject:str];
+    }
+    NSString *string = [muStr componentsJoinedByString:@"\n"];
+    return string;
+}
+
 
 #pragma mark --- UIImage
 /**
@@ -313,7 +440,42 @@
     label.textAlignment = alignment;
     return label;
 }
-
+/**
+ 设置富文本
+ */
++ (NSAttributedString *)attributeWithStr:(NSString *)text lineSpace:(CGFloat)lineSpace font:(UIFont*)font {
+    NSRange range = NSMakeRange(0, text.length);
+    NSMutableAttributedString *attr = [[NSMutableAttributedString  alloc] initWithString:text];
+    [attr addAttribute:NSFontAttributeName value:font range:range];
+    [attr addAttribute:NSForegroundColorAttributeName value:XLTools.xl_black range:range];
+    NSMutableParagraphStyle *paragrap = [[NSMutableParagraphStyle alloc] init];
+    paragrap.lineSpacing = lineSpace;
+    //    paragrap.paragraphSpacing = lineSpace;
+    //    paragrap.paragraphSpacingBefore = lineSpace;
+    paragrap.firstLineHeadIndent = 20;
+    //    paragrap.headIndent = lineSpace;
+    [attr addAttribute:NSParagraphStyleAttributeName value:paragrap range:range];
+    return attr;
+}
+//
+/**
+ 去掉 HTML 字符串中的标签
+ */
++ (NSString *)filterHTML:(NSString *)html
+{
+    NSScanner * scanner = [NSScanner scannerWithString:html];
+    NSString * text = nil;
+    while([scanner isAtEnd]==NO)
+    {
+        //找到标签的起始位置
+        [scanner scanUpToString:@"<" intoString:nil];
+        //找到标签的结束位置
+        [scanner scanUpToString:@">" intoString:&text];
+        //替换字符
+        html = [html stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"%@>",text] withString:@""];
+    }
+    return html;
+}
 #pragma mark ------ UIImageView
 
 /**
@@ -444,10 +606,10 @@ void ProviderReleaseData (void *info, const void *data, size_t size){
         [exception raise];
         
     }
-//    NSLog(@"debug");
+    //    NSLog(@"debug");
     //发布
 #else
-//    NSLog(@"post");
+    //    NSLog(@"post");
 #endif
     
     //获取“path”文件夹下面的所有文件
@@ -512,7 +674,7 @@ void ProviderReleaseData (void *info, const void *data, size_t size){
  *  @return 是否清除成功
  */
 + (BOOL)clearCacheWithFilePath:(NSString *)path {
-     NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSFileManager *fileManager = [NSFileManager defaultManager];
     //拿到path路径的下一级目录的子文件夹
     NSArray *subpathArray = [fileManager contentsOfDirectoryAtPath:path error:nil];
     
@@ -608,6 +770,83 @@ void ProviderReleaseData (void *info, const void *data, size_t size){
 {
     NSData *data = [[NSData alloc]initWithBase64EncodedString:string options:0];
     return [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
+}
+
+
+#pragma mark --- 系统权限
+/**
+ iOS 判断是否允许消息通知
+ */
+
++ (BOOL)isMessageNotificationServiceOpen {
+    if ([[UIDevice currentDevice].systemVersion floatValue]>=8.0f) {
+        
+        UIUserNotificationSettings *setting = [[UIApplication sharedApplication] currentUserNotificationSettings];
+        
+        if (UIUserNotificationTypeNone == setting.types) {
+            return NO;
+        }
+        else
+        {
+            return YES;
+        }
+    }
+    else
+    {
+        UIRemoteNotificationType type = [[UIApplication sharedApplication] enabledRemoteNotificationTypes];
+        
+        if(UIRemoteNotificationTypeNone == type){
+            return NO;
+        }
+        else
+        {
+            return YES;
+        }
+    }
+    
+}
+
+/**
+ 相册权限
+ */
++ (BOOL)isPhotoOpen {
+    
+    /*
+     PHAuthorizationStatusNotDetermined      未作出选择
+     PHAuthorizationStatusRestricted         没有授权
+     PHAuthorizationStatusDenied             拒绝
+     PHAuthorizationStatusAuthorized         授权
+     */
+    PHAuthorizationStatus status = [PHPhotoLibrary authorizationStatus];
+    if (status == PHAuthorizationStatusRestricted || status == PHAuthorizationStatusDenied)
+    {
+        return NO;
+    }
+    return YES;
+}
+
+/**
+ 相机权限
+ */
++ (BOOL)isCameraOpen {
+    
+    /*
+     // 表明用户尚未选择关于客户端是否可以访问硬件
+     AVAuthorizationStatusNotDetermined = 0,
+     // 客户端未被授权访问硬件的媒体类型。用户不能改变客户机的状态,可能由于活跃的限制,如家长控制
+     AVAuthorizationStatusRestricted,
+     // 明确拒绝用户访问硬件支持的媒体类型的客户
+     AVAuthorizationStatusDenied,
+     // 客户端授权访问硬件支持的媒体类型
+     AVAuthorizationStatusAuthorized
+     */
+    AVAuthorizationStatus status = [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeVideo];
+    if (status == AVAuthorizationStatusRestricted || status == AVAuthorizationStatusDenied)
+    {
+        // 无权限
+        // do something...
+    }
+    return YES;
 }
 
 @end

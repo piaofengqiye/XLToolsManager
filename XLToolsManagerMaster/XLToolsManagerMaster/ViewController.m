@@ -9,7 +9,7 @@
 #import "ViewController.h"
 #import "XLTools.h"
 @interface ViewController ()
-
+@property (nonatomic, strong) NSArray *array;
 @end
 
 @implementation ViewController
@@ -17,15 +17,10 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
-    self.view.backgroundColor = XLTools.xl_random;
-    NSString *tempNum = [XLTools getCacheSizeWithFilePath:XLTools.xl_tempPath];
-    NSString *docuNum = [XLTools getCacheSizeWithFilePath:XLTools.xl_documentPath];
-    NSString *cacheNum = [XLTools getCacheSizeWithFilePath:XLTools.xl_cachePath];
-    NSLog(@"%@, %@, %@", tempNum, docuNum, cacheNum);
-    NSString *day = [XLTools timeTransFromTimestamp:XLTools.xl_currentTimeZone format:@"yyyy-MM-dd HH:mm:ss EEEE"];
-    NSLog(@"%@", day);
-    [day capitalizedString];
-    
+    NSDictionary* dataDic = [XLTools readLocalJSONFileWithName:@"github-iphone"];
+    NSDictionary *dic = [[dataDic objectForKey:@"repositories"] firstObject];
+    NSString *keyStr = [XLTools xl_printStringForOCWithData:dic];
+    NSLog(@"\n%@", keyStr);
 }
 
 

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7622768920D247BD0011D8F2 /* github-iphone.json in Resources */ = {isa = PBXBuildFile; fileRef = 7622768820D247BD0011D8F2 /* github-iphone.json */; };
 		7657EE2520B95C5C0062B3F2 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7657EE2420B95C5C0062B3F2 /* AppDelegate.m */; };
 		7657EE2820B95C5C0062B3F2 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7657EE2720B95C5C0062B3F2 /* ViewController.m */; };
 		7657EE2B20B95C5C0062B3F2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7657EE2920B95C5C0062B3F2 /* Main.storyboard */; };
@@ -19,6 +20,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		7622768820D247BD0011D8F2 /* github-iphone.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "github-iphone.json"; sourceTree = "<group>"; };
 		7657EE2020B95C5C0062B3F2 /* XLToolsManagerMaster.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = XLToolsManagerMaster.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7657EE2320B95C5C0062B3F2 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		7657EE2420B95C5C0062B3F2 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -72,6 +74,7 @@
 				7657EE2620B95C5C0062B3F2 /* ViewController.h */,
 				7657EE2720B95C5C0062B3F2 /* ViewController.m */,
 				76D633FD20BCDE3A0082B054 /* index.html */,
+				7622768820D247BD0011D8F2 /* github-iphone.json */,
 				76D633FA20BCDB4D0082B054 /* XLUIWebViewController.h */,
 				76D633FB20BCDB4D0082B054 /* XLUIWebViewController.m */,
 				7657EE2920B95C5C0062B3F2 /* Main.storyboard */,
@@ -150,6 +153,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7657EE3020B95C610062B3F2 /* LaunchScreen.storyboard in Resources */,
+				7622768920D247BD0011D8F2 /* github-iphone.json in Resources */,
 				76D633FE20BCDE3A0082B054 /* index.html in Resources */,
 				7657EE2D20B95C610062B3F2 /* Assets.xcassets in Resources */,
 				7657EE2B20B95C5C0062B3F2 /* Main.storyboard in Resources */,

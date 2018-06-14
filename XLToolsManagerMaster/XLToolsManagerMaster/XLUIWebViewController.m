@@ -22,6 +22,7 @@
     NSString *htmlString = [NSString stringWithContentsOfFile:filePath encoding:NSUTF8StringEncoding error:nil];
     NSURL *url = [[NSURL alloc] initWithString:filePath];
     [self.webView loadHTMLString:htmlString baseURL:url];
+    
 }
 
 - (void)didReceiveMemoryWarning {

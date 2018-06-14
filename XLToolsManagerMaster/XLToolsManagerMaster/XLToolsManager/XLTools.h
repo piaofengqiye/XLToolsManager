@@ -30,6 +30,7 @@
 @property(class, nonatomic, readonly) UIColor *xl_purple;     // 0.5, 0.0, 0.5 RGB
 @property(class, nonatomic, readonly) UIColor *xl_brown;      // 0.6, 0.4, 0.2 RGB
 @property(class, nonatomic, readonly) UIColor *xl_clear;      // 0.0 white, 0.0 alpha
+@property(class, nonatomic, readonly) UIColor *xl_groupTableViewBackground;
 /**
  随机色
  */
@@ -67,6 +68,13 @@
  当前系统时间,格式化输出
  */
 @property(class, nonatomic, readonly) NSString *xl_currentTime;
+/**
+ 当前系统时间,格式化输出<年月日>
+ */
+@property(class, nonatomic, readonly) NSString *xl_currentYMD;
+@property(class, nonatomic, readonly) NSString *xl_currentYear;
+@property(class, nonatomic, readonly) NSString *xl_currentMonth;
+@property(class, nonatomic, readonly) NSString *xl_currentDay;
 /**
  当前系统时间戳
  */
@@ -116,9 +124,32 @@
  */
 + (BOOL)isPassword:(NSString *)password format:(NSString*)format;
 /**
+ 验证邮箱格式
+ */
++ (BOOL)isEMail:(NSString *)email;
+/**
  读取本地JSON文件
  */
 + (NSDictionary *)readLocalJSONFileWithName:(NSString *)name;
+
+/**
+ 得到一个16位随机数
+ 
+ */
++ (NSString *)getRandomNum;
+
+
+
+/**
+ 遍历一个字典, 将key格式化输出 为OC 属性列表
+ 
+ */
++ (NSString *)xl_printStringForOCWithData:(NSDictionary *)data ;
+
+/**
+ 遍历一个字典, 将key格式化输出 为swift 属性列表
+ */
++ (NSString *)xl_printStringForSwiftWithData:(NSDictionary *)data ;
 
 #pragma mark ------ 时间戳转换
 /**
@@ -140,6 +171,11 @@
  字典/数组 转json
  */
 + (NSString*)dictionaryToJson:(id)objc;
+
+/**
+ 将JSON串转化为字典或者数组
+ */
++ (id)jsonToArrayOrNSDictionary:(NSString *)json;
 #pragma mark ------ UIImage
 /**
  *  根据颜色生成一张图片
@@ -154,12 +190,20 @@
  */
 + (UILabel *)labelWithTitle:(NSString *)title font:(CGFloat)font color:(UIColor *)color alignment:(NSTextAlignment)alignment;
 
+/**
+ 设置富文本
+ */
++ (NSAttributedString *)attributeWithStr:(NSString *)text lineSpace:(CGFloat)lineSpace font:(UIFont*)font;
 
+/**
+ 去掉 HTML 字符串中的标签
+ */
++ (NSString *)filterHTML:(NSString *)html;
 #pragma mark ------ UIImageView
 
 /**
  生成二维码
-
+ 
  @param imageView 需要展示二维码的视图
  @param url 生成二维码的字符串
  */
@@ -208,5 +252,19 @@
  对一个字符串进行base解码
  */
 + (NSString *)base64decodeString:(NSString *)string;
+#pragma mark --- 系统权限
+/**
+ iOS 判断是否允许消息通知
+ */
 
++ (BOOL)isMessageNotificationServiceOpen;
+/**
+ 相册权限
+ */
++ (BOOL)isPhotoOpen;
+
+/**
+ 相机权限
+ */
++ (BOOL)isCameraOpen;
 @end
