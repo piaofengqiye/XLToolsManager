@@ -333,7 +333,7 @@
 /**
  读取本地JSON文件
  */
-+ (NSDictionary *)readLocalJSONFileWithName:(NSString *)name {
++ (id)readLocalJSONFileWithName:(NSString *)name {
     // 获取文件路径
     NSString *path = [[NSBundle mainBundle] pathForResource:name ofType:@"json"];
     // 将文件数据化
@@ -847,6 +847,26 @@ void ProviderReleaseData (void *info, const void *data, size_t size){
         // do something...
     }
     return YES;
+}
+
+#pragma mark --- 数组排序
+
+/**
+ 数组:按关键字对象排序
+
+ @param listArray 排序数组
+ @param key 关键字
+ @param ascending //YES 代表升序 如果为NO 代表降序
+ @return 排序后对象数组
+ */
++ (NSArray *)sortArr:(NSArray *)listArray key:(NSString*)key ascending:(BOOL)ascending{
+    if ([XLTools isEmptyString:key]) {
+        NSLog(@"key:关键字不能为空, 原样输出");
+        return listArray;
+    }
+    NSSortDescriptor *updateTime = [NSSortDescriptor sortDescriptorWithKey:key ascending:ascending];
+    NSArray *arr = [listArray sortedArrayUsingDescriptors:@[updateTime]];
+    return arr;
 }
 
 @end

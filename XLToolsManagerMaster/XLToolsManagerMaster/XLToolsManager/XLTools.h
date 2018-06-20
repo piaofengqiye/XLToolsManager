@@ -55,7 +55,7 @@
 @property(class, nonatomic, readonly) BOOL is_xl_iPhone_6_Plus;
 @property(class, nonatomic, readonly) BOOL is_xl_iPhone_X;
 /**
- iPhone navi, tab, status 高度, sceen 宽高
+ iPhone navi, tab, status 高度, screen 宽高
  */
 @property(class, nonatomic, readonly) CGFloat xl_statusBarHeight;
 @property(class, nonatomic, readonly) CGFloat xl_naviBarHeight;
@@ -128,9 +128,9 @@
  */
 + (BOOL)isEMail:(NSString *)email;
 /**
- 读取本地JSON文件
+ 读取本地JSON文件(字典或者数组)
  */
-+ (NSDictionary *)readLocalJSONFileWithName:(NSString *)name;
++ (id)readLocalJSONFileWithName:(NSString *)name;
 
 /**
  得到一个16位随机数
@@ -176,6 +176,17 @@
  将JSON串转化为字典或者数组
  */
 + (id)jsonToArrayOrNSDictionary:(NSString *)json;
+#pragma mark --- 数组排序
+
+/**
+ 数组:按关键字对象排序
+ 
+ @param listArray 排序数组
+ @param key 关键字
+ @param ascending //YES 代表升序 如果为NO 代表降序
+ @return 排序后对象数组
+ */
++ (NSArray *)sortArr:(NSArray *)listArray key:(NSString*)key ascending:(BOOL)ascending;
 #pragma mark ------ UIImage
 /**
  *  根据颜色生成一张图片
